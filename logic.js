@@ -17,3 +17,14 @@ export function calculateMetrics(postsData, commentsData, minChars, minPosts) {
     return {qtdPosts, charMean, comMean, status};
 
 }
+
+// Task 4: Organiza os valores do csv
+export function genCSV(selectedUser, metrics){
+
+    const columns = ("ID,Nome,Quantidade de Posts,Média de Caracteres,Média de Comentários,Status (Ativo/Inativo)");
+    const line = (`${selectedUser.id},${selectedUser.name},${metrics.qtdPosts},${metrics.charMean},${metrics.comMean},${metrics.status}`);
+
+    const csvData = columns + "\n" + line;
+
+    return csvData;
+}

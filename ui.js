@@ -27,3 +27,19 @@ export function showResults({ qtdPosts, charMean, comMean, status }) {
         <p>Status: ${status}</p>
     `;
 }
+
+// Task 4: Fazendo o download do relatorio
+export function csvDownload(csvString, nomeArquivo){
+
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = nomeArquivo;
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+}
