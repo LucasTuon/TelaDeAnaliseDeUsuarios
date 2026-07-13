@@ -48,6 +48,23 @@ async function userData(userId){
     }
 }
 
+function debounceEvent(func, delay){
+    let time;
+    return function(...args){
+        clearTimeout(time);
+        time = setTimeout(() => func(...args),delay);
+    };
+}
+
+function recalculateMetrics(){
+    try {
+        metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        showResults(metrics);
+    } catch (error) {
+        console.error('Erro ao recalcular as métricas: ', error);
+    } 
+}
+const recalculateMetricsDebounced = debounceEvent(recalculateMetrics, 500);
 
 //  -- EVENTOS --
 
@@ -59,7 +76,7 @@ document.querySelector('#userSelect').addEventListener('change', (event) => {
 document.querySelector('#minChars').addEventListener('input', (event) => {
     try {
         minChars = event.target.value;
-        const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        const metrics = recalculateMetricsDebounced(postsData, commentsData, minChars, minPosts);
         showResults(metrics);
     } catch (error) {
          console.error('Erro ao recalcular as metricas (minChar):', error);
@@ -69,7 +86,7 @@ document.querySelector('#minChars').addEventListener('input', (event) => {
 document.querySelector('#minPosts').addEventListener('input', (event) => {
     try {
         minPosts = event.target.value;
-        const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        const metrics = recalculateMetricsDebounced(postsData, commentsData, minChars, minPosts);
         showResults(metrics);
     } catch (error) {
         console.error('Erro ao carregar dados do usuário (minPosts):', error);
