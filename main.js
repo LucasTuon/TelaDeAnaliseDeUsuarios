@@ -75,9 +75,11 @@ document.querySelector('#userSelect').addEventListener('change', (event) => {
 
 document.querySelector('#minChars').addEventListener('input', (event) => {
     try {
-        minChars = event.target.value;
-        const metrics = recalculateMetricsDebounced(postsData, commentsData, minChars, minPosts);
-        showResults(metrics);
+        minChars = Number(event.target.value) || 0;
+        if (selectedUser){
+            recalculateMetricsDebounced();
+        }
+        
     } catch (error) {
          console.error('Erro ao recalcular as metricas (minChar):', error);
     }
@@ -85,9 +87,10 @@ document.querySelector('#minChars').addEventListener('input', (event) => {
 
 document.querySelector('#minPosts').addEventListener('input', (event) => {
     try {
-        minPosts = event.target.value;
-        const metrics = recalculateMetricsDebounced(postsData, commentsData, minChars, minPosts);
-        showResults(metrics);
+        minPosts = Number(event.target.value) || 0;
+        if (selectedUser){
+            recalculateMetricsDebounced();
+        }
     } catch (error) {
         console.error('Erro ao carregar dados do usuário (minPosts):', error);
     }    
