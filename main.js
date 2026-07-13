@@ -96,7 +96,7 @@ document.querySelector('#minPosts').addEventListener('input', (event) => {
 document.querySelector('#generateReport').addEventListener('click', async () =>{
     if (!selectedUser) {
         console.error('Nenhum usuário selecionado.');
-        return; // para aqui, não tenta gerar nada
+        return; 
     }
 
     try {
