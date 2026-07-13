@@ -7,10 +7,10 @@ export function calculateMetrics(postsData, commentsData, minChars, minPosts) {
 
     const qtdPosts = postsDataFiltered.length;
     const charTotal = postsDataFiltered.reduce((acc, post) => acc + post.body.length, 0);
-    const charMean = charTotal / qtdPosts;
+     const charMean = qtdPosts > 0 ? charTotal / qtdPosts : 0;
 
     const qtdComments = commentsData.reduce((acc, comments) => acc + comments.length, 0);
-    const comMean = qtdComments / qtdPosts;
+    const comMean = qtdPosts > 0 ? qtdComments / qtdPosts : 0;
 
     const status = qtdPosts >= minPosts ? 'Ativo' : 'Inativo';
 

@@ -1,6 +1,6 @@
 // Responsavel por juntar api, logic e ui
 
-import { fetchUsers, fetchUserPosts, fetchCommentsForPosts } from './api.js';
+import { fetchUsers, fetchUserPosts, fetchCommentsForPosts, postReport } from './api.js';
 import { calculateMetrics, genCSV } from './logic.js';
 import { selectOptions, showResults, csvDownload } from './ui.js';
 
@@ -18,29 +18,34 @@ let selectedUser = null;
 // -- FUNCOES --
 
 async function main(){
-
-    users = await fetchUsers();
-    selectOptions(users);
-
+    try {
+        users = await fetchUsers();
+        selectOptions(users);
+    } catch (error) {
+        console.error('Erro ao carregar usuários:', error);
+    }
 }
 
 async function userData(userId){
+    try{
+        const userPosts = await fetchUserPosts(userId);
+        const comments = await fetchCommentsForPosts(userPosts);
 
-    const userPosts = await fetchUserPosts(userId);
-    const comments = await fetchCommentsForPosts(userPosts);
+        postsData = userPosts;
+        commentsData = comments;
 
-    postsData = userPosts;
-    commentsData = comments;
-
-    for (let i = 0; i < users.length; i++){
-        if (users[i].id == userId){
-            selectedUser = users[i];
-            break;
+        for (let i = 0; i < users.length; i++){
+            if (users[i].id == userId){
+                selectedUser = users[i];
+                break;
+            }
         }
-    }
 
-    metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
-    showResults(metrics);
+        metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        showResults(metrics);
+    } catch (error) {
+        console.error('Erro ao carregar dados do usuário:', error);
+    }
 }
 
 
@@ -52,20 +57,42 @@ document.querySelector('#userSelect').addEventListener('change', (event) => {
 });
 
 document.querySelector('#minChars').addEventListener('input', (event) => {
-    minChars = event.target.value;
-    const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
-    showResults(metrics);
+    try {
+        minChars = event.target.value;
+        const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        showResults(metrics);
+    } catch (error) {
+         console.error('Erro ao recalcular as metricas (minChar):', error);
+    }
 });
 
 document.querySelector('#minPosts').addEventListener('input', (event) => {
-    minPosts = event.target.value;
-    const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
-    showResults(metrics);
+    try {
+        minPosts = event.target.value;
+        const metrics = calculateMetrics(postsData, commentsData, minChars, minPosts);
+        showResults(metrics);
+    } catch (error) {
+        console.error('Erro ao carregar dados do usuário (minPosts):', error);
+    }    
 });
 
-document.querySelector('#generateReport').addEventListener('click', () =>{
-    const csv = genCSV(selectedUser, metrics);
-    csvDownload(csv, 'relatorio.csv');
+document.querySelector('#generateReport').addEventListener('click', async () =>{
+    if (!selectedUser) {
+        console.error('Nenhum usuário selecionado.');
+        return; // para aqui, não tenta gerar nada
+    }
+
+    try {
+        const csv = genCSV(selectedUser, metrics);
+        csvDownload(csv, 'relatorio.csv');
+
+        const report = { usuario: selectedUser, metricas: metrics};
+
+        const response = await postReport(report); 
+        console.log('Relatório enviado: ', response);
+    } catch (error) {
+        console.error('Erro ao enviar relatório: ', error);
+    }
 });
 
 // -- FUNCAO INICIAL --
