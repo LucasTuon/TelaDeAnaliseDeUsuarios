@@ -8,8 +8,8 @@ Uma ferramenta interativa construída em JavaScript vanila para listar usuários
 
 A aplicação está hospedada através do **GitHub Pages**. 
 
-Para testar o projeto, basta acessar o link abaixo:
-**[Clique aqui para acessar a aplicação](https://seu-usuario.github.io/TelaDeAnaliseDeUsuarios/)**
+Para testar o projeto, basta acessar o link:  
+**[Clique aqui](https://lucastuon.github.io/TelaDeAnaliseDeUsuarios/)**
 
 ---
 
