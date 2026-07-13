@@ -1,4 +1,7 @@
-// Exclusivamente responsavel por mexer no HTML
+//  Responsável pela manipulação do DOM:
+//  Adiciona os usuários no Select, exibe os resultados na tela 
+//  e dispara o download do CSV
+
 
 // Task 1: Exibir os usuarios na interface
 export function selectOptions(users){

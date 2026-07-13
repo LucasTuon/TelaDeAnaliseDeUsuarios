@@ -1,4 +1,5 @@
-// Exclusivamente responsavel por calcular as metricas a partir dos dados
+//  Responsavel por calcular as metricas a partir dos dados brutos
+//  e montar o conteudo do relatorio CSV
 
 // Task 2 e 3: Calculo de metricas e aplicacao dos filtros minChars e minPosts
 export function calculateMetrics(postsData, commentsData, minChars, minPosts) {
@@ -7,6 +8,8 @@ export function calculateMetrics(postsData, commentsData, minChars, minPosts) {
 
     const qtdPosts = postsDataFiltered.length;
     const charTotal = postsDataFiltered.reduce((acc, post) => acc + post.body.length, 0);
+
+    // Garante que a média não quebre (NaN/Infinity) caso a quantidade de posts seja zero
      const charMean = qtdPosts > 0 ? charTotal / qtdPosts : 0;
 
     const qtdComments = commentsData.reduce((acc, comments) => acc + comments.length, 0);

@@ -1,4 +1,7 @@
-// Responsavel por juntar api, logic e ui
+//  Ponto de entrada da aplicação:
+//  Importa as funções dos outros três módulos, gerencia os estados 
+//  e registra os event listeners
+
 
 import { fetchUsers, fetchUserPosts, fetchCommentsForPosts, postReport } from './api.js';
 import { calculateMetrics, genCSV } from './logic.js';

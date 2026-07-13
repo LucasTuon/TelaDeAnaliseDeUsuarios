@@ -1,4 +1,5 @@
-// Exclusivamente responsavel por buscar os dados brutos da API JSONPlaceHolder
+//  Responsavel por buscar os dados brutos da API JSONPlaceHolder (GET)
+//  e simular o envio do relatorio (POST)
 
 // Task 1: Carregamento Inicial - GET /users
 export async function fetchUsers() {
